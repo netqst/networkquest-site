@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetworkQst — The AI Networking Coach for Every Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;0,800;1,600;1,700;1,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* DARK MODE COLOR PALETTE */
+  --ink: #07090f;
+  --ink2: #111827;
+  --surface: #1e293b;
+  --surface2: #0f172a;
+  --border: #334155;
+  --border2: #475569;
+  --text: #f8fafc;
+  --text2: #cbd5e1;
+  --muted: #94a3b8;
+  --muted2: #64748b;
+  --muted3: #475569;
+  
+  --accent: #7B6CF8;
+  --accent-lt: #9b8cfc;
+  --accent-dim: rgba(123, 108, 248, 0.15);
+  --accent-dim2: rgba(123, 108, 248, 0.2);
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.15);
+  --orange: #f97316;
+  --orange-dim: rgba(249, 115, 22, 0.15);
+  --teal: #14b8a6;
+  --teal-dim: rgba(20, 184, 166, 0.15);
+  --yellow: #f59e0b;
+  --yellow-dim: rgba(245, 158, 11, 0.15);
+  --red: #ef4444;
+  --gold: #d9a05b;
+  
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+  --sh-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --sh: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2);
+  --sh-lg: 0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3);
+  --max: 1100px;
+  --pad: 72px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── CUSTOM BRAND LOGO ── */
+.brand-combo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  user-select: none;
+}
+.brand-nq {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+.brand-nq-qst { color: #FBBF24; }
+.brand-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border2);
+}
+.brand-eml {
+  font-size: 15px;
+  color: #9CA3AF;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.brand-eml-strong { color: #ffffff; font-weight: 700; font-size: 18px; }
+.brand-eml-ml { color: #D9A05B; font-weight: 700; font-size: 18px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--pad); height: 60px;
+  background: rgba(7, 9, 15, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow .2s;
+}
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  transition: opacity .15s !important;
+}
+.nav-cta:hover { opacity: 0.82 !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: center;
+  padding: 120px var(--pad) 100px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 70% 50%, rgba(123, 108, 248, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 760px; }
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(40px, 5.5vw, 70px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.6);
+  max-width: 560px;
+  line-height: 1.78;
+  font-weight: 400;
+  margin-bottom: 44px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  display: inline-block;
+  background: var(--accent); color: #ffffff;
+  padding: 13px 28px; border-radius: 7px;
+  font-weight: 600; font-size: 14px; text-decoration: none;
+  transition: all .18s; border: none; cursor: pointer; font-family: var(--sans);
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-block;
+  background: transparent; color: var(--text);
+  padding: 13px 28px; border-radius: 7px;
+  font-weight: 500; font-size: 14px; text-decoration: none;
+  transition: all .18s; border: 1px solid var(--border); cursor: pointer; font-family: var(--sans);
+}
+.btn-ghost:hover { background: var(--surface); border-color: var(--border2); }
+
+/* ── SHARED SECTION ── */
+.sec { padding: 108px var(--pad); background: var(--ink); }
+.sec-tinted { background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.wrap { max-width: var(--max); margin: 0 auto; }
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: block;
+}
+.eyebrow-light { color: var(--muted); }
+.eyebrow-accent { color: var(--accent); }
+.eyebrow-teal { color: var(--teal); }
+h2.display {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.08; letter-spacing: -1px;
+  color: var(--text); font-weight: 700; margin-bottom: 18px;
+}
+h2.display em { font-style: italic; color: var(--accent); }
+h2.display.light { color: #ffffff; }
+h2.display.light em { color: var(--accent-lt); }
+h2.display.teal em { color: var(--teal); }
+.sec-desc { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 540px; }
+.sec-desc.light { color: var(--muted); }
+.sec-header-center { text-align: center; margin-bottom: 64px; }
+.sec-header-center .sec-desc { margin: 0 auto; }
+
+/* ── PROBLEM BAND ── */
+.problem-band { background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px var(--pad); }
+.problem-band-inner { max-width: var(--max); margin: 0 auto; }
+.problem-stats {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px; overflow: hidden;
+  margin-bottom: 56px;
+  background: var(--surface);
+}
+.pstat {
+  padding: 40px 32px; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.pstat:last-child { border-right: none; }
+.pstat-num {
+  font-family: var(--serif);
+  font-size: 50px; font-weight: 700; line-height: 1;
+  margin-bottom: 10px; letter-spacing: -1px;
+}
+.pstat-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 400; line-height: 1.45; }
+
+.problem-single-quote {
+  text-align: center;
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.2vw, 24px);
+  color: var(--text);
+  line-height: 1.4;
+  margin-top: 24px;
+}
+
+/* ── FEATURE SECTIONS ── */
+.feature-section { padding: 108px var(--pad); background: var(--ink); }
+.feature-section.tinted { background: var(--surface2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.feature-header { margin-bottom: 56px; }
+.feature-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 12px;
+  padding: 4px 12px; border-radius: 100px;
+}
+.feature-label.advisor { background: var(--teal-dim); color: var(--teal); }
+.feature-label.student { background: var(--accent-dim2); color: var(--accent-lt); }
+
+/* ── FEATURE CARDS ── */
+.feature-cards { display: flex; flex-direction: column; gap: 32px; }
+.feature-card {
+  display: grid; grid-template-columns: 320px 1fr;
+  gap: 48px; align-items: start;
+  padding: 40px 44px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  transition: border-color .2s;
+}
+
+/* Alternating Grid Layout */
+.feature-card.alt {
+  grid-template-columns: 1fr 320px;
+}
+.feature-card.alt .fc-meta {
+  grid-column: 2;
+  grid-row: 1;
+}
+.feature-card.alt .fc-mock {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.feature-card:hover { border-color: var(--border2); }
+.fc-meta {}
+.fc-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 100px; display: inline-block; margin-bottom: 12px;
+}
+.advisor-tag { background: var(--teal-dim); color: var(--teal); }
+.student-tag { background: var(--accent-dim2); color: var(--accent-lt); }
+.fc-title { font-family: var(--serif); font-size: 22px; color: var(--text); line-height: 1.2; font-weight: 700; margin-bottom: 10px; }
+.fc-desc { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
+.fc-legacy {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 13px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; margin-top: 14px;
+}
+.legacy-old { font-size: 11px; color: var(--muted2); line-height: 1.45; }
+.legacy-new { font-size: 11px; color: var(--teal); font-weight: 500; line-height: 1.45; }
+.fc-mock { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--sh); background: var(--surface); }
+
+/* ── WHO GRID ── */
+.who-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 52px;
+}
+.who-card { background: var(--surface); padding: 44px 36px; transition: background .2s; }
+.who-card:hover { background: var(--surface2); }
+.who-ic { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 18px; }
+.who-ic.p { background: var(--accent-dim2); } .who-ic.t { background: var(--teal-dim); } .who-ic.g { background: var(--green-dim); }
+.who-aud { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.who-aud.p { color: var(--accent-lt); } .who-aud.t { color: var(--teal); } .who-aud.g { color: var(--green); }
+.who-card h3 { font-family: var(--serif); font-size: 20px; color: var(--text); margin-bottom: 10px; line-height: 1.2; font-weight: 700; }
+.wlist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.wlist li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.wlist li .ck { flex-shrink: 0; font-size: 11px; margin-top: 1px; }
+.wlist li .ck.p { color: var(--accent-lt); } .wlist li .ck.t { color: var(--teal); } .wlist li .ck.g { color: var(--green); }
+
+/* ── CONTACT ── */
+.contact-section { padding: 108px var(--pad); background: var(--ink); border-top: 1px solid var(--border); }
+.contact-inner {
+  max-width: var(--max); margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+}
+.contact-form { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.form-input {
+  padding: 11px 16px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 7px; font-size: 14px; font-family: var(--sans);
+  color: var(--text); outline: none; transition: border-color .15s;
+}
+.form-input::placeholder { color: var(--muted3); }
+.form-input:focus { border-color: var(--accent); background: var(--surface); }
+.form-textarea { resize: vertical; min-height: 96px; }
+.form-submit {
+  padding: 13px 28px; background: var(--accent); color: #ffffff;
+  border: none; border-radius: 7px; font-size: 14px; font-weight: 600;
+  font-family: var(--sans); cursor: pointer; transition: opacity .15s; align-self: flex-start;
+}
+.form-submit:hover { opacity: 0.88; }
+#cf-success-inline {
+  display: none; background: rgba(22,163,74,0.15);
+  border: 1px solid rgba(22,163,74,0.3); border-radius: 8px;
+  padding: 12px 16px; font-size: 13px; color: #86efac;
+}
+
+/* ── FOOTER ── */
+footer { background: var(--ink2); padding: 56px var(--pad) 40px; border-top: 1px solid var(--border); }
+.footer-inner {
+  max-width: var(--max); margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto auto; gap: 48px; margin-bottom: 40px;
+}
+.footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 220px; margin-top: 10px; }
+.footer-col-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted2); margin-bottom: 14px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: var(--text); }
+.footer-bottom {
+  max-width: var(--max); margin: 0 auto; padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-copy { font-size: 12px; color: var(--muted2); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.fu { animation: fadeUp .7s ease forwards; }
+.d1 { animation-delay: .1s; opacity: 0; } .d2 { animation-delay: .25s; opacity: 0; }
+.d3 { animation-delay: .4s; opacity: 0; } .d4 { animation-delay: .55s; opacity: 0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1000px) {
+  :root { --pad: 32px; }
+  .problem-stats, .who-grid { grid-template-columns: 1fr; }
+  .pstat { border-right: none; border-bottom: 1px solid var(--border); }
+  .pstat:last-child { border-bottom: none; }
+  
+  .feature-card, .feature-card.alt { grid-template-columns: 1fr; gap: 28px; }
+  .feature-card.alt .fc-meta { grid-column: 1; grid-row: 1; }
+  .feature-card.alt .fc-mock { grid-column: 1; grid-row: 2; }
+  
+  .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  nav { padding: 0 24px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .hero { padding: 100px 32px 80px; }
+}
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  h2.display { font-size: 30px; }
+  .hero h1 { font-size: 36px; letter-spacing: -1px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="brand-combo">
+    <div class="brand-nq">
+      <span>Network<span class="brand-nq-qst">Qst</span></span>
+    </div>
+    <div class="brand-divider"></div>
+    <div class="brand-eml">
+      by <span class="brand-eml-strong">enroll</span><span class="brand-eml-ml">ml</span>
+    </div>
+  </a>
+  
+  <div class="nav-links">
+    <a href="#hidden-market">The Hidden Job Market</a>
+    <a href="#advisors">For Advisors</a>
+    <a href="#students">For Students</a>
+    <a href="#who">Who It's For</a>
+    <a href="#contact" class="nav-cta">Get In Touch</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="fu d1">The AI networking coach for every student. The command center for every advisor.</h1>
+    <p class="hero-sub fu d2">NetworkQst gives students a daily system for building the relationships that lead to jobs — and gives career advisors real-time intelligence on every student in their caseload.</p>
+    <div class="hero-btns fu d3">
+      <a href="#contact" class="btn-primary" onclick="openContact(event)">Get In Touch</a>
+      <a href="#advisors" class="btn-ghost">See How It Works ↓</a>
+    </div>
+  </div>
+</div>
+
+<div class="problem-band" id="hidden-market">
+  <div class="problem-band-inner">
+    <div style="max-width:640px;margin-bottom:52px">
+      <span class="eyebrow eyebrow-light">The Hidden Job Market</span>
+      <h2 class="display light" style="margin-bottom:12px">Jobs aren't found <em>on job boards.</em></h2>
+      <p class="sec-desc light">70% of jobs are never posted online. The entire opportunity lives in the hidden market — filled through referrals and relationships, not applications. Career services was never built to close this gap. NetworkQst was.</p>
+    </div>
+
+    <div class="problem-stats">
+      <div class="pstat">
+        <div class="pstat-num" style="color:var(--orange)">70%</div>
+        <div class="pstat-label">of jobs are never posted online</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num" style="color:var(--text)">85%</div>
+        <div class="pstat-label">of jobs are filled through networking</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num" style="color:var(--accent-lt)">1:600+</div>
+        <div class="pstat-label">career advisor-to-student ratio</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-num" style="color:var(--text);font-size:38px">20 min</div>
+        <div class="pstat-label">of every 30-minute advising session spent just catching up</div>
+      </div>
+    </div>
+    
+    <div class="problem-single-quote">
+      Colleges are pointing students to the lake. Nobody's teaching them how to fish.
+    </div>
+  </div>
+</div>
+
+<div class="feature-section" id="advisors">
+  <div class="wrap">
+    <div class="feature-header">
+      <span class="feature-label advisor">📋 For Advisors</span>
+      <h2 class="display" style="margin-top:6px">Stop catching up.<br><em>Start advising.</em></h2>
+      <p class="sec-desc" style="margin-top:14px">Your students do the logging. The AI does the analysis. Walk into every session already knowing the student — their progress, their gaps, and exactly what to say.</p>
+    </div>
+
+    <div class="feature-cards">
+
+      <div class="feature-card">
+        <div class="fc-meta">
+          <div class="fc-tag advisor-tag">AI Assessment</div>
+          <div class="fc-title">What does an advisor see 60 seconds before a student walks in?</div>
+          <div class="fc-desc">One click generates a complete brief — psychological state, data-backed gaps, and recommended talking points. The 20-minute catch-up disappears entirely.</div>
+          <div class="fc-legacy">
+            <span class="legacy-old">✕ Before: Guessing student progress, spending 20 minutes just catching up.</span>
+            <span class="legacy-new">✓ Now: 60-second data-backed briefing with advice on how to help every student.</span>
+          </div>
+        </div>
+        <div class="fc-mock">
+          <div style="background:var(--accent);padding:9px 14px;display:flex;align-items:center;justify-content:space-between">
+            <div style="color:#fff;font-size:12px;font-weight:600">🧠 AI Assessment — Jane Smith</div>
+            <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,.2);color:#fff;padding:2px 7px;border-radius:4px">Generated 60s ago</div>
+          </div>
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:9px">
+            <div style="background:var(--accent-dim);border-radius:8px;padding:10px 12px;border-left:3px solid var(--accent)"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-lt);margin-bottom:5px">✨ Quick Assessment</div><div style="font-size:11px;color:var(--text2);line-height:1.65">Jane appears to be at a critical momentum point — her recent activity shows strong relationship-building with 10 Champions and a proven 50% meeting conversion rate. However, a persistent follow-up avoidance pattern means she's leaving significant multiplier effects on the table. Her 7,900+ XP investment is approaching the conversion threshold where consistency pays off.</div></div>
+            <div style="background:var(--accent-dim);border-radius:8px;padding:10px 12px"><div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-lt);margin-bottom:3px">⚡ Psychological State: Cultivating</div><div style="font-size:11px;color:var(--muted);line-height:1.6">Up from Discouraged in late February. Contacts grew 11→25. High investment, zero interviews yet — monitor for frustration at the plateau.</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:5px">✓ Strengths</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.55;display:flex;gap:5px;margin-bottom:3px"><span style="color:var(--green);flex-shrink:0">•</span>50% meeting conversion — top 5% of cohort</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.55;display:flex;gap:5px;margin-bottom:3px"><span style="color:var(--green);flex-shrink:0">•</span>10 Champions — 40% ratio, strong quality</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.55;display:flex;gap:5px"><span style="color:var(--green);flex-shrink:0">•</span>7,900+ XP — at imminent conversion point</div>
+              </div>
+              <div><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:5px">⚠ Concerns</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.55;display:flex;gap:5px;margin-bottom:3px"><span style="color:var(--orange);flex-shrink:0">•</span>0% follow-up rate — missing the multiplier</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.55;display:flex;gap:5px"><span style="color:var(--orange);flex-shrink:0">•</span>6 Champions never activated — untapped pipeline</div>
+              </div>
+            </div>
+            <div style="height:1px;background:var(--border)"></div>
+            <div><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:6px">→ Recommended Advisor Actions</div>
+              <div style="background:var(--accent-dim);border-radius:6px;padding:7px 10px;display:flex;gap:6px;margin-bottom:4px"><span style="font-size:11px;font-weight:700;color:var(--accent-lt);flex-shrink:0">1.</span><span style="font-size:11px;color:var(--text2);line-height:1.5"><strong style="color:var(--text)">Reframe.</strong> "You're at the exact point where relationships convert — not stuck."</span></div>
+              <div style="background:var(--accent-dim);border-radius:6px;padding:7px 10px;display:flex;gap:6px;margin-bottom:4px"><span style="font-size:11px;font-weight:700;color:var(--accent-lt);flex-shrink:0">2.</span><span style="font-size:11px;color:var(--text2);line-height:1.5"><strong style="color:var(--text)">Activate.</strong> "Your strongest Champion has 100/100 engagement. Ask her today."</span></div>
+              <div style="background:var(--accent-dim);border-radius:6px;padding:7px 10px;display:flex;gap:6px"><span style="font-size:11px;font-weight:700;color:var(--accent-lt);flex-shrink:0">3.</span><span style="font-size:11px;color:var(--text2);line-height:1.5"><strong style="color:var(--text)">Build discipline.</strong> "Most responses come on the 2nd message. Pick 3 non-responders now."</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card alt">
+        <div class="fc-meta">
+          <div class="fc-tag advisor-tag">Real-Time Triage</div>
+          <div class="fc-title">Your entire caseload. Understood in 30 seconds.</div>
+          <div class="fc-desc">The 28-Day Activity Grid is an at-a-glance triage tool. Empty rows tell you exactly who is falling through the cracks — before it's too late to intervene.</div>
+          <div class="fc-legacy">
+            <span class="legacy-old">✕ Before: Waiting for students to show up and hoping for the best.</span>
+            <span class="legacy-new">✓ Now: Proactive AI-powered triage across your entire caseload in seconds.</span>
+          </div>
+        </div>
+        <div class="fc-mock" style="font-size:12px">
+          <div style="padding:12px 16px;border-bottom:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Welcome back, Advisor</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:1px">Here's what's happening with your students today.</div>
+          </div>
+          <div style="padding:8px 16px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:4px"><span>👥</span><span style="font-size:15px;font-weight:700;color:var(--green);font-family:var(--serif)">10</span><span style="font-size:10px;color:var(--muted)">Active</span></div>
+            <div style="display:flex;align-items:center;gap:4px"><span>📈</span><span style="font-size:15px;font-weight:700;color:var(--accent-lt);font-family:var(--serif)">1,750</span><span style="font-size:10px;color:var(--muted)">Avg Score</span></div>
+            <div style="display:flex;align-items:center;gap:4px"><span>🗓</span><span style="font-size:15px;font-weight:700;color:var(--teal);font-family:var(--serif)">15</span><span style="font-size:10px;color:var(--muted)">Interviews</span></div>
+            <div style="display:flex;align-items:center;gap:4px"><span>⚠️</span><span style="font-size:15px;font-weight:700;color:var(--orange);font-family:var(--serif)">14</span><span style="font-size:10px;color:var(--muted)">Need Attention</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--surface2)">
+            <div style="background:var(--surface);padding:12px 14px;border:1px solid var(--border);border-radius:10px;border-top:3px solid var(--green)"><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📈 TOP XP</div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">AL</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Alex Chen</span><span style="font-size:11px;font-weight:600;color:var(--green)">+4,440</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">JO</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Jordan Lee</span><span style="font-size:11px;font-weight:600;color:var(--green)">+2,345</span></div><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">SA</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Sam Rivera</span><span style="font-size:11px;font-weight:600;color:var(--green)">+685</span></div></div>
+            <div style="background:var(--surface);padding:12px 14px;border:1px solid var(--border);border-radius:10px;border-top:3px solid var(--accent)"><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">👥 NEW CONTACTS</div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">AL</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Alex Chen</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">8</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">MO</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Morgan Patel</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">6</span></div><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">SA</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Sam Rivera</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">5</span></div></div>
+            <div style="background:var(--surface);padding:12px 14px;border:1px solid var(--border);border-radius:10px;border-top:3px solid var(--accent-lt)"><div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px">🔗 REFERRALS</div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">AL</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Alex Chen</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">3</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px"><div style="width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">JO</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Jordan Lee</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">3</span></div><div style="display:flex;align-items:center;gap:7px"><div style="width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">SA</div><span style="font-size:11px;color:var(--text);font-weight:500;flex:1">Sam Rivera</span><span style="font-size:11px;font-weight:600;color:var(--accent-lt)">2</span></div></div>
+          </div>
+          <div style="padding:10px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+              <div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;font-weight:700;color:var(--text)">⚠ Needs Attention</span><span style="background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:100px">14</span></div>
+              <span style="font-size:10px;color:var(--accent-lt);font-weight:600">View All →</span>
+            </div>
+            <div style="padding-left:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--surface2);border-left:3px solid var(--orange);padding-left:8px;margin-left:-8px"><div style="width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">AR</div><div style="flex:1"><div style="font-size:11px;font-weight:500;color:var(--text)">Alex R.</div><div style="font-size:10px;margin-top:1px"><span style="color:var(--orange);font-weight:600">6d inactive</span></div></div><div style="background:var(--accent-dim);color:var(--accent-lt);font-size:9px;font-weight:600;padding:3px 9px;border-radius:5px;cursor:pointer;flex-shrink:0">Follow Up</div></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--surface2);border-left:3px solid var(--red);padding-left:8px;margin-left:-8px"><div style="width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">JK</div><div style="flex:1"><div style="font-size:11px;font-weight:500;color:var(--text)">Jordan K.</div><div style="font-size:10px;margin-top:1px"><span style="color:var(--red);font-weight:600">91d inactive</span></div></div><div style="background:var(--accent-dim);color:var(--accent-lt);font-size:9px;font-weight:600;padding:3px 9px;border-radius:5px;cursor:pointer;flex-shrink:0">Follow Up</div></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-left:3px solid var(--red);padding-left:8px;margin-left:-8px"><div style="width:26px;height:26px;border-radius:50%;background:var(--accent-lt);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">MS</div><div style="flex:1"><div style="font-size:11px;font-weight:500;color:var(--text)">Morgan S.</div><div style="font-size:10px;margin-top:1px"><span style="color:var(--red);font-weight:600">Never active</span></div></div><div style="background:var(--accent-dim);color:var(--accent-lt);font-size:9px;font-weight:600;padding:3px 9px;border-radius:5px;cursor:pointer;flex-shrink:0">Follow Up</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="feature-section tinted" id="students">
+  <div class="wrap">
+    <div class="feature-header">
+      <span class="feature-label student">🎓 For Students</span>
+      <h2 class="display" style="margin-top:6px">Build instincts that<br><em>last a lifetime.</em></h2>
+      <p class="sec-desc" style="margin-top:14px">Students don't just find their first job — they build the strategic networking muscle memory that compounds for the rest of their careers. 3 AI-generated daily micro-actions, a live contact network, and a coach that knows their entire history.</p>
+    </div>
+
+    <div class="feature-cards">
+
+      <div class="feature-card">
+        <div class="fc-meta">
+          <div class="fc-tag student-tag">Champion Activation</div>
+          <div class="fc-title">Say goodbye to the spreadsheet. Say hello to relationship intelligence.</div>
+          <div class="fc-desc">Every contact tiered by relationship depth — Cold, Connected, or Champion. One activated Champion is worth 40 blind applications. The system teaches students to leverage what they already have.</div>
+          <div class="fc-legacy">
+            <span class="legacy-old">✕ Before: Tracking contacts on a spreadsheet or trying to remember them in your head.</span>
+            <span class="legacy-new">✓ Now: A live relationship strategy — every contact tiered, every next action clear.</span>
+          </div>
+        </div>
+        <div class="fc-mock">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">RELATIONSHIP STRATEGY <span style="font-size:10px;color:var(--muted);font-weight:400">· 25 contacts</span></div>
+            <div style="background:var(--accent);color:#fff;font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px">+ Add Contact</div>
+          </div>
+          <div style="padding:8px 14px;display:flex;gap:6px;border-bottom:1px solid var(--border)">
+            <div style="flex:1;background:var(--accent);color:#fff;border-radius:8px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700">25</div><div style="font-size:9px;font-weight:600;letter-spacing:1px;margin-top:2px">ALL</div></div>
+            <div style="flex:1;background:var(--green-dim);color:var(--green);border-radius:8px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700">10</div><div style="font-size:9px;font-weight:600;letter-spacing:1px;margin-top:2px">CHAMPION</div></div>
+            <div style="flex:1;background:var(--orange-dim);color:var(--orange);border-radius:8px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700">11</div><div style="font-size:9px;font-weight:600;letter-spacing:1px;margin-top:2px">CONNECTED</div></div>
+            <div style="flex:1;background:var(--accent-dim);color:var(--accent-lt);border-radius:8px;padding:8px;text-align:center"><div style="font-size:16px;font-weight:700">4</div><div style="font-size:9px;font-weight:600;letter-spacing:1px;margin-top:2px">COLD</div></div>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr style="background:var(--surface2)">
+              <th style="padding:6px 10px;text-align:left;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">CONTACT</th>
+              <th style="padding:6px 10px;text-align:left;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">ROLE</th>
+              <th style="padding:6px 10px;text-align:left;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">TIER</th>
+              <th style="padding:6px 10px;text-align:left;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)">STATUS</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:8px 10px;border-bottom:1px solid var(--surface2)"><div style="display:flex;align-items:center;gap:6px"><div style="width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">JD</div><span style="font-size:11px;color:var(--text);font-weight:500">Jordan Davis</span></div></td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;color:var(--muted)">Director, TechCorp</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:11px;font-weight:600;color:var(--green)">Champion</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;font-weight:500;color:var(--yellow)">Awaiting reply</td></tr>
+              <tr><td style="padding:8px 10px;border-bottom:1px solid var(--surface2)"><div style="display:flex;align-items:center;gap:6px"><div style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">MP</div><span style="font-size:11px;color:var(--text);font-weight:500">Morgan Park</span></div></td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;color:var(--muted)">Associate, BCG</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:11px;font-weight:600;color:var(--orange)">Connected</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;font-weight:500;color:var(--green)">✓ Engaged</td></tr>
+              <tr><td style="padding:8px 10px;border-bottom:1px solid var(--surface2)"><div style="display:flex;align-items:center;gap:6px"><div style="width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">SL</div><span style="font-size:11px;color:var(--text);font-weight:500">Sam Lee</span></div></td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;color:var(--muted)">PM, Startup Co</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:11px;font-weight:600;color:var(--green)">Champion</td><td style="padding:8px 10px;border-bottom:1px solid var(--surface2);font-size:10px;font-weight:500;color:var(--muted2)">—</td></tr>
+              <tr><td style="padding:8px 10px"><div style="display:flex;align-items:center;gap:6px"><div style="width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">RK</div><span style="font-size:11px;color:var(--text);font-weight:500">Riley Kim</span></div></td><td style="padding:8px 10px;font-size:10px;color:var(--muted)">Recruiter, Google</td><td style="padding:8px 10px;font-size:11px;font-weight:600;color:var(--accent-lt)">Cold</td><td style="padding:8px 10px;font-size:10px;font-weight:500;color:var(--muted2)">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="feature-card alt" style="align-items: center;">
+        <div class="fc-meta">
+          <div class="fc-tag student-tag">Habit Engine</div>
+          <div class="fc-title">Networking as daily habit, not occasional panic.</div>
+          <div class="fc-desc">3 AI-generated micro-actions per day — specific contacts, specific language, specific reasoning. One-time workshops fade. Daily practice builds instinct. That's the point.</div>
+          <div class="fc-legacy">
+            <span class="legacy-old">✕ Before: A once-per-semester networking workshop nobody remembers.</span>
+            <span class="legacy-new">✓ Now: Daily behavioral reinforcement that builds lifetime networking instincts.</span>
+          </div>
+        </div>
+        <div class="fc-mock">
+          <div style="background:var(--yellow-dim);border-bottom:1px solid rgba(245,158,11,.2);padding:10px 14px;display:flex;align-items:center;gap:9px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚡</div>
+            <div style="flex:1"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;font-weight:700;color:var(--text)">20 Min Sprint</span><span style="background:var(--orange-dim);color:var(--orange);font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px">1 day streak 🔥</span></div><div style="font-size:10px;color:var(--muted)">3 micro-actions — built from your real network, refreshed daily</div></div>
+            <div style="font-size:11px;font-weight:700;color:var(--orange)">0/3</div>
+          </div>
+          <div style="padding:0 14px">
+            <div style="padding:9px 0;border-bottom:1px solid var(--surface2);display:flex;align-items:flex-start;gap:7px"><span style="width:13px;height:13px;border:1.5px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:2px;display:inline-block"></span><div style="flex:1;font-size:11px;color:var(--muted);line-height:1.55">You met with <strong style="color:var(--text2)">Jordan Davis</strong> recently. Ask: <em style="color:var(--text2)">"Who else should I be talking to in your field?"</em> — This turns one contact into three.</div></div>
+            <div style="padding:9px 0;border-bottom:1px solid var(--surface2);display:flex;align-items:flex-start;gap:7px"><span style="width:13px;height:13px;border:1.5px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:2px;display:inline-block"></span><div style="flex:1;font-size:11px;color:var(--muted);line-height:1.55"><strong style="color:var(--text2)">Sam Lee</strong> is a Champion ready to advocate. Ask for 20 minutes: <em style="color:var(--text2)">"I'd love your advice on breaking into consulting."</em></div></div>
+            <div style="padding:9px 0;display:flex;align-items:flex-start;gap:7px"><span style="width:13px;height:13px;border:1.5px solid var(--border2);border-radius:3px;flex-shrink:0;margin-top:2px;display:inline-block"></span><div style="flex:1;font-size:11px;color:var(--muted);line-height:1.55">Reach out to <strong style="color:var(--text2)">Riley Kim</strong> at Google. <em style="color:var(--text2)">"I'm exploring product roles — do you know anyone I should be talking to?"</em></div></div>
+          </div>
+          <div style="padding:7px 14px;background:var(--surface2);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span style="font-size:10px;color:var(--muted2);font-style:italic">Personalized to your real network. Refreshes daily.</span><span style="font-size:10px;color:var(--accent-lt);font-weight:600">↻ Refresh</span></div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-meta">
+          <div class="fc-tag student-tag">Real-Time Feedback</div>
+          <div class="fc-title">A coach that knows their entire network history.</div>
+          <div class="fc-desc">The AI Coach delivers personalized, momentum-aware feedback based on everything a student has logged. It recognizes what's working, flags what isn't, and surfaces the single highest-leverage next action.</div>
+          <div class="fc-legacy">
+            <span class="legacy-old">✕ Before: Generic career center tips that apply to everyone and no one.</span>
+            <span class="legacy-new">✓ Now: Context-aware coaching that knows this student's specific network, patterns, and gaps.</span>
+          </div>
+        </div>
+        <div class="fc-mock" style="background: #11091a; border: 1px solid #2d1b4e; border-radius: 12px; box-shadow: var(--sh);">
+          <div style="padding: 16px 20px 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px; color: #fcd34d;">💡</span>
+              <span style="font-size: 14px; font-weight: 700; color: #d8b4fe;">AI Coach</span>
+            </div>
+            <span style="font-size: 12px; color: #8b5cf6; font-weight: 500; display: flex; align-items: center; gap: 4px; cursor: pointer;">↻ Refresh</span>
+          </div>
+          <div style="padding: 0 20px 24px;">
+            <p style="font-weight: 700; color: #ffffff; font-size: 15px; line-height: 1.5; margin-bottom: 12px;">
+              You have 25 contacts but zero are active, which means conversations have stalled. Riley Kim at Google is your strongest Champion but you contacted them without asking for anything meaningful.
+            </p>
+            <p style="font-weight: 400; color: #9ca3af; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+              Champions want to help but need clear requests. Your network is dormant because you're not activating the relationships you've built. One real conversation beats 200 passive connections.
+            </p>
+            <p style="font-weight: 500; color: #d8b4fe; font-size: 14px; line-height: 1.5;">
+              Message Riley Kim today. Reference your previous contact, mention one specific thing you're working on, and ask for 15 minutes to get their advice. When you send it, use the voice logger to track it.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="who">
+  <div class="wrap">
+    <div class="sec-header-center">
+      <span class="eyebrow eyebrow-accent">Who It's For</span>
+      <h2 class="display">Three stakeholders. <em>One platform.</em></h2>
+      <p class="sec-desc">NetworkQst delivers measurable value to every person in the career services ecosystem.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-ic p">🏛️</div>
+        <div class="who-aud p">For Institutions</div>
+        <h3>Move the placement needle</h3>
+        <ul class="wlist">
+          <li><span class="ck p">✦</span>Measurable improvement in post-grad placement rates</li>
+          <li><span class="ck p">✦</span>Institutional-level data on student networking activity</li>
+          <li><span class="ck p">✦</span>Configurable goals and standards per institution</li>
+          <li><span class="ck p">✦</span>Scales with your department — no new headcount required</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <div class="who-ic t">📋</div>
+        <div class="who-aud t">For Career Advisors</div>
+        <h3>Make every meeting count</h3>
+        <ul class="wlist">
+          <li><span class="ck t">✦</span>AI Assessment Brief generated before every meeting</li>
+          <li><span class="ck t">✦</span>Proactive at-risk flagging before students fall behind</li>
+          <li><span class="ck t">✦</span>Full student timeline, contact network, and activity history</li>
+          <li><span class="ck t">✦</span>Talking points ready to use in the session</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <div class="who-ic g">🎓</div>
+        <div class="who-aud g">For Students</div>
+        <h3>Build instincts that last a lifetime</h3>
+        <ul class="wlist">
+          <li><span class="ck g">✦</span>3 AI-generated daily micro-actions — specific contacts, specific language</li>
+          <li><span class="ck g">✦</span>XP system rewards relationship depth over application volume</li>
+          <li><span class="ck g">✦</span>Voice logging so capturing activity never breaks momentum</li>
+          <li><span class="ck g">✦</span>Full pipeline: contacts, applications, calendar, notes, insights</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div>
+      <span class="eyebrow eyebrow-light">Get in Touch</span>
+      <h2 class="display light" style="margin-top:14px">Let us show you the future of <em>career services.</em></h2>
+      <p class="sec-desc light" style="margin-top:16px">Request a demo or ask us anything.</p>
+    </div>
+    <form class="contact-form" onsubmit="submitInlineContact(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Name <span style="color:var(--orange)">*</span></label>
+          <input id="inf-name" type="text" class="form-input" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Institution <span style="color:var(--orange)">*</span></label>
+          <input id="inf-institution" type="text" class="form-input" placeholder="University of Missouri" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email <span style="color:var(--orange)">*</span></label>
+        <input id="inf-email" type="email" class="form-input" placeholder="jane@university.edu" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message <span style="font-weight:400;color:var(--muted2)">(optional)</span></label>
+        <textarea id="inf-notes" class="form-input form-textarea" placeholder="Tell us about your institution or goals..."></textarea>
+      </div>
+      <div id="cf-success-inline">&#10003; Thanks! We'll be in touch.</div>
+      <button type="submit" id="inf-submit" class="form-submit">Let's Talk &rarr;</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="brand-combo" style="transform: scale(0.85); transform-origin: left center; margin-bottom: 10px;">
+        <div class="brand-nq">
+          <span>Network<span class="brand-nq-qst">Qst</span></span>
+        </div>
+        <div class="brand-divider"></div>
+        <div class="brand-eml">
+          by <span class="brand-eml-strong">enroll</span><span class="brand-eml-ml">ml</span>
+        </div>
+      </div>
+      <p class="footer-tagline">Fulfilling the promise of higher education outcomes.<br>A product of enroll ml.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Product</div>
+      <ul class="footer-links">
+        <li><a href="#advisors">For Advisors</a></li>
+        <li><a href="#students">For Students</a></li>
+        <li><a href="#who">Who It's For</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="https://enrollml.com" target="_blank" rel="noopener">enroll ml</a></li>
+        <li><a href="#who">Our Mission</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 enroll ml. All rights reserved.</div>
+    <div class="footer-copy">Stop Catching Up. Start Advising.</div>
+  </div>
+</footer>
+
+<script>
+function submitInlineContact(e) {
+  e.preventDefault();
+  document.getElementById('inf-submit').style.display = 'none';
+  document.getElementById('cf-success-inline').style.display = 'block';
+}
+function openContact(e) {
+  if (e) e.preventDefault();
+  document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+}
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.boxShadow = window.scrollY > 60 ? '0 1px 0 var(--border), 0 2px 16px rgba(0,0,0,0.4)' : 'none';
+}, { passive: true });
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.who-card, .feature-card, .pquote').forEach(el => {
+  el.style.cssText += 'opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
