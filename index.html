@@ -331,12 +331,6 @@ h2.display.teal em { color: var(--teal); }
   font-family: var(--sans); cursor: pointer; transition: opacity .15s; align-self: flex-start;
 }
 .form-submit:hover { opacity: 0.88; }
-#cf-success-inline {
-  display: none; background: rgba(22,163,74,0.15);
-  border: 1px solid rgba(22,163,74,0.3); border-radius: 8px;
-  padding: 12px 16px; font-size: 13px; color: #86efac;
-}
-
 /* ── FOOTER ── */
 footer { background: var(--ink2); padding: 56px var(--pad) 40px; border-top: 1px solid var(--border); }
 .footer-inner {
@@ -413,7 +407,7 @@ footer { background: var(--ink2); padding: 56px var(--pad) 40px; border-top: 1px
     <h1 class="fu d1">The AI networking coach for every student. The command center for every advisor.</h1>
     <p class="hero-sub fu d2">NetworkQst gives students a daily system for building the relationships that lead to jobs — and gives career advisors real-time intelligence on every student in their caseload.</p>
     <div class="hero-btns fu d3">
-      <a href="#contact" class="btn-primary" onclick="openContact(event)">Get In Touch</a>
+      <a href="#contact" class="btn-primary">Get In Touch</a>
       <a href="#advisors" class="btn-ghost">See How It Works ↓</a>
     </div>
   </div>
@@ -706,27 +700,27 @@ footer { background: var(--ink2); padding: 56px var(--pad) 40px; border-top: 1px
       <h2 class="display light" style="margin-top:14px">Let us show you the future of <em>career services.</em></h2>
       <p class="sec-desc light" style="margin-top:16px">Request a demo or ask us anything.</p>
     </div>
-    <form class="contact-form" onsubmit="submitInlineContact(event)">
+    <form class="contact-form" name="contact" method="POST" data-netlify="true" action="/thanks.html">
+      <input type="hidden" name="form-name" value="contact">
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Name <span style="color:var(--orange)">*</span></label>
-          <input id="inf-name" type="text" class="form-input" placeholder="Jane Smith" required>
+          <input name="name" type="text" class="form-input" placeholder="Jane Smith" required>
         </div>
         <div class="form-group">
           <label class="form-label">Institution <span style="color:var(--orange)">*</span></label>
-          <input id="inf-institution" type="text" class="form-input" placeholder="University of Missouri" required>
+          <input name="institution" type="text" class="form-input" placeholder="University of Missouri" required>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">Email <span style="color:var(--orange)">*</span></label>
-        <input id="inf-email" type="email" class="form-input" placeholder="jane@university.edu" required>
+        <input name="email" type="email" class="form-input" placeholder="jane@university.edu" required>
       </div>
       <div class="form-group">
         <label class="form-label">Message <span style="font-weight:400;color:var(--muted2)">(optional)</span></label>
-        <textarea id="inf-notes" class="form-input form-textarea" placeholder="Tell us about your institution or goals..."></textarea>
+        <textarea name="message" class="form-input form-textarea" placeholder="Tell us about your institution or goals..."></textarea>
       </div>
-      <div id="cf-success-inline">&#10003; Thanks! We'll be in touch.</div>
-      <button type="submit" id="inf-submit" class="form-submit">Let's Talk &rarr;</button>
+      <button type="submit" class="form-submit">Let's Talk &rarr;</button>
     </form>
   </div>
 </div>
@@ -769,15 +763,6 @@ footer { background: var(--ink2); padding: 56px var(--pad) 40px; border-top: 1px
 </footer>
 
 <script>
-function submitInlineContact(e) {
-  e.preventDefault();
-  document.getElementById('inf-submit').style.display = 'none';
-  document.getElementById('cf-success-inline').style.display = 'block';
-}
-function openContact(e) {
-  if (e) e.preventDefault();
-  document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
-}
 const nav = document.querySelector('nav');
 window.addEventListener('scroll', () => {
   nav.style.boxShadow = window.scrollY > 60 ? '0 1px 0 var(--border), 0 2px 16px rgba(0,0,0,0.4)' : 'none';
